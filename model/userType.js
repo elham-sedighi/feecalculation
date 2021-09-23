@@ -1,4 +1,4 @@
 const UserType = Object.freeze({
-    natural: "natural",
-    juridical: "juridical"
+  natural: 'natural',
+  juridical: 'juridical',
 });

@@ -1,36 +1,34 @@
-"use strict";
+const assert = require('assert');
+const calculator = require('./feeCalculator');
 
-const assert = require( "assert" );
-const calculator = require( "./feeCalculator" );
+describe('FeeCalculator', () => {
+  before(() => {
+    console.log('before executes once before all tests');
+  });
 
-describe( "FeeCalculator", () => {
-    before( () => {
-        console.log( "before executes once before all tests" );
-    } );
+  after(() => {
+    console.log('after executes once after all tests');
+  });
 
-    after( () => {
-        console.log( "after executes once after all tests" );
-    } );
+  describe('adding', () => {
+    beforeEach(() => {
+      console.log('beforeEach executes before every test');
+    });
+    it('should return 4 when adding 2 + 2', () => {
+      assert.equal(calculator.add(2, 2), 4);
+    });
 
-    describe( "adding", () => {
-        beforeEach( () => {
-            console.log( "beforeEach executes before every test" );
-        } );
-        it( "should return 4 when adding 2 + 2", () => {
-            assert.equal( calc.add( 2, 2 ), 4 );
-        } );
+    it('should return 0 when adding zeros', () => {
+      assert.equal(calculator.add(0, 0), 0);
+    });
+  });
 
-        it( "should return 0 when adding zeros", () => {
-            assert.equal( calc.add( 0, 0 ), 0 );
-        } );
-    } );
-
-    describe( "error", () => {
-        it( "should return an error", () => {
-            assert.throws( calc.badd, {
-                name: "Error",
-                message: "it blowed up"
-            } );
-        } );
-    } );
-} );
+  describe('error', () => {
+    it('should return an error', () => {
+      assert.throws(calculator.badd, {
+        name: 'Error',
+        message: 'it blowed up',
+      });
+    });
+  });
+});

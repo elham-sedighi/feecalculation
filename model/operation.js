@@ -1,12 +1,14 @@
-import {OperationDetail} from "./operationDetail";
 import * as moment from 'moment';
+// import OperationDetail from './operationDetail';
 
-export class Operation {
-    constructor(user_id, date, user_type, type, operation) {
-        this.user_id = user_id;
-        this.date = moment(date, 'YYYY-MM-DD');
-        this.user_type = user_type;
-        this.type = type;
-        this.operation = new OperationDetail(operation.amount, operation.currency)
-    }
+class Operation {
+  constructor(userId, date, userType, type) {
+    this.user_id = userId;
+    this.date = moment(date, 'YYYY-MM-DD');
+    this.user_type = userType;
+    this.type = type;
+    // this.operation = new OperationDetail(operation.amount, operation.currency);
+  }
 }
+
+module.exports.default = Operation;
