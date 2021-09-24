@@ -1,12 +1,9 @@
 import CashOutFeeCalculator from './cashOutFeeCalculator';
-import { config } from '../../../../appConfig';
 
 export default class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
-  constructor() {
-    super();
-    this.currencyFormatter = config.currencyFormatter;
+  constructor(currencyFormatter, feeConfig) {
+    super(currencyFormatter, feeConfig);
     this.cashOutNaturalOperationRecords = new Map();
-    this.feeConfig = config.cashOutNaturalFeeConfig;
   }
 
   calculate(operation) {

@@ -1,9 +1,7 @@
-import { config } from '../../../appConfig';
-
 export default class CashInFeeCalculator {
-  constructor() {
-    this.currencyFormatter = config.currencyFormatter;
-    this.feeConfig = config.cashInFeeConfig;
+  constructor(currencyFormatter, feeConfig) {
+    this.currencyFormatter = currencyFormatter;
+    this.feeConfig = feeConfig;
   }
 
   calculate(operation) {

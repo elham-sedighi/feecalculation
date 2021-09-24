@@ -1,4 +1,5 @@
 import CashInFeeCalculator from "../model/fee/feeCalculator/cashInFeeCalculator.js";
+import {config} from "../appConfig"
 
 describe('feeCalculationApp', () => {
   // eslint-disable-next-line no-undef
