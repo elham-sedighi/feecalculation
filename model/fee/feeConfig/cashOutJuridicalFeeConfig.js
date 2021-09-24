@@ -1,7 +1,7 @@
-const FeeConfig = require('./feeConfig');
-const OperationDetail = require('../../operationDetail');
+import FeeConfig from './feeConfig';
+import OperationDetail from '../../operationDetail';
 
-export default class cashOutJuridicalFeeConfig extends FeeConfig {
+export default class CashOutJuridicalFeeConfig extends FeeConfig {
   constructor(percents, min) {
     super(percents);
     this.min = new OperationDetail(min.amount, min.currency);

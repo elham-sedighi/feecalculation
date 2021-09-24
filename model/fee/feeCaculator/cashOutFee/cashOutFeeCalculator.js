@@ -1,4 +1,4 @@
-class CashOutFeeCalculator {
+export default class CashOutFeeCalculator {
+  constructor() {
+  }
 }
-
-module.exports = CashOutFeeCalculator;

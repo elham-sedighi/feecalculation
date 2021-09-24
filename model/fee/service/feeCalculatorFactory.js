@@ -1,8 +1,8 @@
-import * as CashInFeeCalculator from '../feeCaculator/cashInFeeCalculator';
-import * as CashOutFeeNaturalCalculator from '../feeCaculator/cashOutFee/cashOutFeeNaturalCalculator';
-import * as CashOutFeeJuridicalCalculator from '../feeCaculator/cashOutFee/cashOutFeeJuridicalCalculator';
+import CashInFeeCalculator from '../feeCaculator/cashInFeeCalculator';
+import CashOutFeeNaturalCalculator from '../feeCaculator/cashOutFee/cashOutFeeNaturalCalculator';
+import CashOutFeeJuridicalCalculator from '../feeCaculator/cashOutFee/cashOutFeeJuridicalCalculator';
 
-class FeeCalculatorFactory {
+export default class FeeCalculatorFactory {
   constructor() {
     this.feeCalculators = new Map();
   }
@@ -37,5 +37,3 @@ class FeeCalculatorFactory {
     }
   }
 }
-
-module.exports = FeeCalculatorFactory;

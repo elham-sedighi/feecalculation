@@ -1,14 +1,14 @@
-const fetch = require('node-fetch');
-const CashOutFeeCalculator = require('./cashOutFeeCalculator');
-const appConfig = require('../../../../appConfig');
+import * as CashOutFeeCalculator from './cashOutFeeCalculator';
 
-class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
+export default class CashOutFeeNaturalCalculator {
   constructor() {
-    super();
-    this.cashOutNaturalOperationRecords = new Map();
-    fetch(appConfig.cashOutNaturalFeeConfigURL).then((_config) => {
-      this.feeConfig = _config;
+    this.currencyFormatter = new Intl.NumberFormat('en-US', {
+      /* style: 'currency', */
+      currency: 'EUR',
+      minimumFractionDigits: 2,
     });
+    this.cashOutNaturalOperationRecords = new Map();
+    this.feeConfig = global.feeConfigs.get('cash_out_natural');
   }
 
   calculate(operation) {
@@ -16,10 +16,10 @@ class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
     const newAmount = operation.operation.amount;
     let fee;
     const allAmounts = existedAmount + newAmount;
-    if (allAmounts > this.feeConfig?.week_limit.amount) {
+    if (allAmounts > this.feeConfig?.week_limit?.amount) {
       const effectiveAmount = newAmount - this.calculateExceededAmount(existedAmount);
-      fee = parseFloat(appConfig.currencyFormatter.format(effectiveAmount
-              * this.feeConfig?.percents * 0.01));
+      fee = parseFloat(this.currencyFormatter.format(effectiveAmount
+          * this.feeConfig?.percents * 0.01)).toFixed(2);
     }
     this.addOprToMap(operation);
     return fee;
@@ -30,7 +30,7 @@ class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
     if (!oldRecord) {
       return 0;
     }
-    if (oldRecord.date.week() === date.week()) {
+    if (oldRecord.date === date) {
       return oldRecord.amount;
     }
     return 0;
@@ -49,7 +49,7 @@ class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
     if (!oldRecord) {
       this.cashOutNaturalOperationRecords.set(operation.user_id,
         { date: oprDate, amount: operation.operation.amount });
-    } else if (oldRecord.date.week() === oprDate.week()) {
+    } else if (oldRecord.date === oprDate) {
       oldRecord.amount += operation.operation.amount;
     } else {
       this.cashOutNaturalOperationRecords.set(operation.user_id,
@@ -57,5 +57,3 @@ class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
     }
   }
 }
-
-module.exports = CashOutFeeNaturalCalculator;

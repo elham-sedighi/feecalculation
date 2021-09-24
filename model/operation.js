@@ -1,14 +1,11 @@
-import * as moment from 'moment';
-// import OperationDetail from './operationDetail';
+import OperationDetail from './operationDetail';
 
-class Operation {
-  constructor(userId, date, userType, type) {
+export default class Operation {
+  constructor(userId, date, userType, type, amount, currency) {
     this.user_id = userId;
-    this.date = moment(date, 'YYYY-MM-DD');
+    this.date = date;
     this.user_type = userType;
     this.type = type;
-    // this.operation = new OperationDetail(operation.amount, operation.currency);
+    this.operation = new OperationDetail(amount, currency);
   }
 }
-
-module.exports.default = Operation;
