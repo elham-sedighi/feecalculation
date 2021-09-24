@@ -1,6 +1,6 @@
-import CashInFeeCalculator from '../feeCaculator/cashInFeeCalculator';
-import CashOutFeeNaturalCalculator from '../feeCaculator/cashOutFee/cashOutFeeNaturalCalculator';
-import CashOutFeeJuridicalCalculator from '../feeCaculator/cashOutFee/cashOutFeeJuridicalCalculator';
+import CashInFeeCalculator from '../feeCalculator/cashInFeeCalculator';
+import CashOutFeeNaturalCalculator from '../feeCalculator/cashOutFee/cashOutFeeNaturalCalculator';
+import CashOutFeeJuridicalCalculator from '../feeCalculator/cashOutFee/cashOutFeeJuridicalCalculator';
 
 export default class FeeCalculatorFactory {
   constructor() {

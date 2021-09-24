@@ -9,7 +9,6 @@ import CashInFeeConfig from './model/fee/feeConfig/cashInFeeConfig';
 import CashOutNaturalFeeConfig from './model/fee/feeConfig/cashOutNaturalFeeConfig';
 import CashOutJuridicalFeeConfig from './model/fee/feeConfig/cashOutJuridicalFeeConfig';
 
-global.feeConfigs = new Map();
 moment.updateLocale('en', {
   week: {
     dow: 1,
@@ -28,6 +27,7 @@ function startFeeCalculation() {
   readFile('./input.json', 'utf8', (err, data) => {
     if (err) console.log('failed to read file!');
     const feeCalculator = new FeeCalculatorFactory();
+    console.log('start calculating fees...');
     [...JSON.parse(data)].forEach((operation) => {
       const opr = new Operation(
         operation.user_id,
@@ -46,9 +46,13 @@ function startFeeCalculation() {
 
 getFeeConfigs()
   .subscribe(([cashInFeeConfig, cashOutNaturalFeeConfig, cashOutJuridicalFeeConfig]) => {
-    global.feeConfigs.set('cash_in', new CashInFeeConfig(cashInFeeConfig.percents, cashInFeeConfig.max));
-    global.feeConfigs.set('cash_out_natural', new CashOutNaturalFeeConfig(cashOutNaturalFeeConfig.percents, cashOutNaturalFeeConfig.week_limit));
-    global.feeConfigs.set('cash_out_juridical', new CashOutJuridicalFeeConfig(cashOutJuridicalFeeConfig.percents, cashOutJuridicalFeeConfig.min));
+    config.cashInFeeConfig = new CashInFeeConfig(cashInFeeConfig.percents, cashInFeeConfig.max);
+    config.cashOutNaturalFeeConfig = new CashOutNaturalFeeConfig(
+      cashOutNaturalFeeConfig.percents, cashOutNaturalFeeConfig.week_limit,
+    );
+    config.cashOutJuridicalFeeConfig = new CashOutJuridicalFeeConfig(
+      cashOutJuridicalFeeConfig.percents, cashOutJuridicalFeeConfig.min,
+    );
     startFeeCalculation();
   });
 

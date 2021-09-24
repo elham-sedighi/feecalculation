@@ -1,13 +1,11 @@
 import CashOutFeeCalculator from './cashOutFeeCalculator';
+import { config } from '../../../../appConfig';
 
 export default class CashOutFeeJuridicalCalculator extends CashOutFeeCalculator {
   constructor() {
     super();
-    this.currencyFormatter = new Intl.NumberFormat('en-US', {
-      currency: 'EUR',
-      minimumFractionDigits: 2,
-    });
-    this.feeConfig = global.feeConfigs.get('cash_out_juridical');
+    this.currencyFormatter = config.currencyFormatter;
+    this.feeConfig = config.cashOutJuridicalFeeConfig;
   }
 
   calculate(operation) {

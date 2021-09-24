@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node --experimental-modules --es-module-specifier-resolution=node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --fix index.js"
+    "test-init": "node ./node_modules/jasmine/bin/jasmine.js init",
+    "test": "node --experimental-modules ./node_modules/jasmine/bin/jasmine.js"
   },
   "dependencies": {
     "moment": "^2.29.1",
@@ -21,6 +21,6 @@
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.24.2",
-    "mocha": "^9.1.1"
+    "jasmine": "^3.9.0"
   }
 }
