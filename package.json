@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node --experimental-modules --es-module-specifier-resolution=node index.js",
     "test-init": "node ./node_modules/jasmine/bin/jasmine.js init",
-    "test": "node --experimental-modules ./node_modules/jasmine/bin/jasmine.js"
+    "test": "node --experimental-modules --es-module-specifier-resolution=node ./node_modules/jasmine/bin/jasmine.js"
   },
   "dependencies": {
     "moment": "^2.29.1",
