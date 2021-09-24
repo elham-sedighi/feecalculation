@@ -1,9 +1,9 @@
-import * as CashOutFeeCalculator from './cashOutFeeCalculator';
+import CashOutFeeCalculator from './cashOutFeeCalculator';
 
-export default class CashOutFeeNaturalCalculator {
+export default class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
   constructor() {
+    super();
     this.currencyFormatter = new Intl.NumberFormat('en-US', {
-      /* style: 'currency', */
       currency: 'EUR',
       minimumFractionDigits: 2,
     });
@@ -12,7 +12,7 @@ export default class CashOutFeeNaturalCalculator {
   }
 
   calculate(operation) {
-    const existedAmount = this.getExistedAmount(operation.user_id, operation.date);
+    const existedAmount = this.getExistedAmount(operation.user_id, operation.weekNumber);
     const newAmount = operation.operation.amount;
     let fee;
     const allAmounts = existedAmount + newAmount;
@@ -25,12 +25,12 @@ export default class CashOutFeeNaturalCalculator {
     return fee;
   }
 
-  getExistedAmount(userId, date) {
+  getExistedAmount(userId, weekNumber) {
     const oldRecord = this.cashOutNaturalOperationRecords.get(userId);
     if (!oldRecord) {
       return 0;
     }
-    if (oldRecord.date === date) {
+    if (oldRecord.weekNumber === weekNumber) {
       return oldRecord.amount;
     }
     return 0;
@@ -45,15 +45,15 @@ export default class CashOutFeeNaturalCalculator {
 
   addOprToMap(operation) {
     const oldRecord = this.cashOutNaturalOperationRecords.get(operation.user_id);
-    const oprDate = operation.date;
+    const { weekNumber } = operation;
     if (!oldRecord) {
       this.cashOutNaturalOperationRecords.set(operation.user_id,
-        { date: oprDate, amount: operation.operation.amount });
-    } else if (oldRecord.date === oprDate) {
+        { weekNumber, amount: operation.operation.amount });
+    } else if (oldRecord.date === weekNumber) {
       oldRecord.amount += operation.operation.amount;
     } else {
       this.cashOutNaturalOperationRecords.set(operation.user_id,
-        { date: oprDate, amount: operation.operation.amount });
+        { weekNumber, amount: operation.operation.amount });
     }
   }
 }

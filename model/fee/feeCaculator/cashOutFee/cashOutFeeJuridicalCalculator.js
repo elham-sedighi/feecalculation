@@ -1,9 +1,9 @@
-import * as CashOutFeeCalculator from './cashOutFeeCalculator';
+import CashOutFeeCalculator from './cashOutFeeCalculator';
 
-export default class CashOutFeeJuridicalCalculator {
+export default class CashOutFeeJuridicalCalculator extends CashOutFeeCalculator {
   constructor() {
+    super();
     this.currencyFormatter = new Intl.NumberFormat('en-US', {
-      /* style: 'currency', */
       currency: 'EUR',
       minimumFractionDigits: 2,
     });

@@ -10,7 +10,6 @@
     "lint": "eslint --fix index.js"
   },
   "dependencies": {
-    "config": "^3.3.6",
     "moment": "^2.29.1",
     "node-fetch": "^3.0.0",
     "rxjs": "^7.3.0"

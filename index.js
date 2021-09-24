@@ -13,9 +13,9 @@ global.feeConfigs = new Map();
 
 function getFeeConfigs() {
   return forkJoin([
-    fetch(config.cashInFeeConfigURL).then((res) => res.json()),
-    fetch(config.cashOutNaturalFeeConfigURL).then((res) => res.json()),
-    fetch(config.cashOutJuridicalFeeConfigURL).then((res) => res.json())]);
+    fetch(config.cashInFeeConfigURL),
+    fetch(config.cashOutNaturalFeeConfigURL),
+    fetch(config.cashOutJuridicalFeeConfigURL)]);
 }
 
 function startFeeCalculation() {
@@ -24,10 +24,9 @@ function startFeeCalculation() {
     if (err) console.log('failed to read file!');
     const feeCalculator = new FeeCalculatorFactory();
     [...JSON.parse(data)].forEach((operation) => {
-      moment.locale('en');
       const opr = new Operation(
         operation.user_id,
-        moment(operation.data, 'YYYY-MM-DD').week(),
+        moment(operation.date, 'YYYY-MM-DD').week(),
         operation.user_type,
         operation.type,
         operation.operation.amount,
@@ -40,10 +39,24 @@ function startFeeCalculation() {
   });
 }
 
-getFeeConfigs()
+/* getFeeConfigs()
   .subscribe(([cashInFeeConfig, cashOutNaturalFeeConfig, cashOutJuridicalFeeConfig]) => {
     global.feeConfigs.set('cash_in', new CashInFeeConfig(cashInFeeConfig.percents, cashInFeeConfig.max));
     global.feeConfigs.set('cash_out_natural', new CashOutNaturalFeeConfig(cashOutNaturalFeeConfig.percents, cashOutNaturalFeeConfig.week_limit));
     global.feeConfigs.set('cash_out_juridical', new CashOutJuridicalFeeConfig(cashOutJuridicalFeeConfig.percents, cashOutJuridicalFeeConfig.min));
     startFeeCalculation();
-  });
+  }); */
+
+global.feeConfigs.set('cash_in', new CashInFeeConfig(0.03, {
+  amount: 5,
+  currency: 'EUR',
+}));
+global.feeConfigs.set('cash_out_natural', new CashOutNaturalFeeConfig(0.3, {
+  amount: 1000,
+  currency: 'EUR',
+}));
+global.feeConfigs.set('cash_out_juridical', new CashOutJuridicalFeeConfig(0.3, {
+  amount: 0.5,
+  currency: 'EUR',
+}));
+startFeeCalculation();

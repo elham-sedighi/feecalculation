@@ -1,4 +1,5 @@
-const UserType = Object.freeze({
+// eslint-disable-next-line import/prefer-default-export
+export const UserType = Object.freeze({
   natural: 'natural',
   juridical: 'juridical',
 });

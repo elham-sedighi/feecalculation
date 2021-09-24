@@ -2,7 +2,6 @@
 export const config = {
   currency: 'EUR',
   currencyFormatter: new Intl.NumberFormat('en-US', {
-    style: 'currency',
     currency: 'EUR',
     maximumFractionDigits: 2,
   }),
