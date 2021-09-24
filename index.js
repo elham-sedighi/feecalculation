@@ -10,12 +10,17 @@ import CashOutNaturalFeeConfig from './model/fee/feeConfig/cashOutNaturalFeeConf
 import CashOutJuridicalFeeConfig from './model/fee/feeConfig/cashOutJuridicalFeeConfig';
 
 global.feeConfigs = new Map();
+moment.updateLocale('en', {
+  week: {
+    dow: 1,
+  },
+});
 
 function getFeeConfigs() {
   return forkJoin([
-    fetch(config.cashInFeeConfigURL),
-    fetch(config.cashOutNaturalFeeConfigURL),
-    fetch(config.cashOutJuridicalFeeConfigURL)]);
+    fetch(config.cashInFeeConfigURL).then((res) => res.json()),
+    fetch(config.cashOutNaturalFeeConfigURL).then((res) => res.json()),
+    fetch(config.cashOutJuridicalFeeConfigURL).then((res) => res.json())]);
 }
 
 function startFeeCalculation() {
@@ -39,15 +44,15 @@ function startFeeCalculation() {
   });
 }
 
-/* getFeeConfigs()
+getFeeConfigs()
   .subscribe(([cashInFeeConfig, cashOutNaturalFeeConfig, cashOutJuridicalFeeConfig]) => {
     global.feeConfigs.set('cash_in', new CashInFeeConfig(cashInFeeConfig.percents, cashInFeeConfig.max));
     global.feeConfigs.set('cash_out_natural', new CashOutNaturalFeeConfig(cashOutNaturalFeeConfig.percents, cashOutNaturalFeeConfig.week_limit));
     global.feeConfigs.set('cash_out_juridical', new CashOutJuridicalFeeConfig(cashOutJuridicalFeeConfig.percents, cashOutJuridicalFeeConfig.min));
     startFeeCalculation();
-  }); */
+  });
 
-global.feeConfigs.set('cash_in', new CashInFeeConfig(0.03, {
+/* global.feeConfigs.set('cash_in', new CashInFeeConfig(0.03, {
   amount: 5,
   currency: 'EUR',
 }));
@@ -59,4 +64,4 @@ global.feeConfigs.set('cash_out_juridical', new CashOutJuridicalFeeConfig(0.3, {
   amount: 0.5,
   currency: 'EUR',
 }));
-startFeeCalculation();
+startFeeCalculation(); */

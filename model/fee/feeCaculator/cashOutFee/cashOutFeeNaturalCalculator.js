@@ -14,12 +14,12 @@ export default class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
   calculate(operation) {
     const existedAmount = this.getExistedAmount(operation.user_id, operation.weekNumber);
     const newAmount = operation.operation.amount;
-    let fee;
+    let fee = 0;
     const allAmounts = existedAmount + newAmount;
-    if (allAmounts > this.feeConfig?.week_limit?.amount) {
+    if (allAmounts >= this.feeConfig?.week_limit?.amount) {
       const effectiveAmount = newAmount - this.calculateExceededAmount(existedAmount);
-      fee = parseFloat(this.currencyFormatter.format(effectiveAmount
-          * this.feeConfig?.percents * 0.01)).toFixed(2);
+      fee = this.currencyFormatter.format(effectiveAmount
+          * this.feeConfig?.percents * 0.01);
     }
     this.addOprToMap(operation);
     return fee;
@@ -49,7 +49,7 @@ export default class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
     if (!oldRecord) {
       this.cashOutNaturalOperationRecords.set(operation.user_id,
         { weekNumber, amount: operation.operation.amount });
-    } else if (oldRecord.date === weekNumber) {
+    } else if (oldRecord.weekNumber === weekNumber) {
       oldRecord.amount += operation.operation.amount;
     } else {
       this.cashOutNaturalOperationRecords.set(operation.user_id,
