@@ -10,6 +10,7 @@ import CashOutJuridicalFeeConfig from './model/feeConfig/cashOutJuridicalFeeConf
 import { getWeekNumber } from './utility/dateUtil';
 import { Currency } from './model/currency';
 
+// get fee configs from API
 function getFeeConfigs() {
   console.log('start getting fee config data from API...');
   return forkJoin([
@@ -18,6 +19,7 @@ function getFeeConfigs() {
     fetch(config.cashOutJuridicalFeeConfigURL).then((res) => res.json())]);
 }
 
+// read operations from input json file
 function readInputData(InputDataPath) {
   console.log('start reading data from input file...');
   return new Observable((subscriber) => {
@@ -29,6 +31,7 @@ function readInputData(InputDataPath) {
   });
 }
 
+// calculate operation fees
 function calculateFees(inputData) {
   console.log('start calculating fees...');
   const feeCalculator = new FeeCalculatorFactory();
@@ -51,6 +54,7 @@ function calculateFees(inputData) {
   console.log('fee calculation finished successfully!');
 }
 
+// manual fee config
 function setLocalFeeConfigs() {
   config.cashInFeeConfig = new CashInFeeConfig(0.03, {
     amount: 5,
@@ -95,4 +99,5 @@ function runFeeCalculationApp() {
   );
 }
 
+// start
 runFeeCalculationApp();

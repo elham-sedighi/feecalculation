@@ -19,6 +19,7 @@ export default class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
     return fee;
   }
 
+  // returns total cashed out amounts for each user in recent week
   getExistedAmount(userId, weekNumber) {
     const oldRecord = this.cashOutNaturalOperationRecords.get(userId);
     if (!oldRecord) {
@@ -30,6 +31,7 @@ export default class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
     return 0;
   }
 
+  // calculates exceeded amount to apply the commission
   calculateExceededAmount(existedAmount) {
     if (existedAmount - this.feeConfig?.week_limit.amount > 0) {
       return 0;
@@ -37,6 +39,7 @@ export default class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
     return this.feeConfig?.week_limit.amount - existedAmount;
   }
 
+  // records the cashed out operations in a map
   addOprToMap(operation) {
     const oldRecord = this.cashOutNaturalOperationRecords.get(operation.user_id);
     const { weekNumber } = operation;

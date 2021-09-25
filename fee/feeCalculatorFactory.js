@@ -5,6 +5,7 @@ import { config } from '../appConfig/appConfig';
 import { UserType } from '../model/userType';
 import { OperationType } from '../model/operationType';
 
+// a factory to create new calculator for each operation (operation type/user type)
 export default class FeeCalculatorFactory {
   constructor() {
     this.feeCalculators = new Map();
