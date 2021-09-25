@@ -63,11 +63,16 @@ describe('feeCalculation', () => {
     })
 
     describe('cash out', () => {
+
+        let cashOutFeeNaturalCalculator;
+
+        beforeAll(() => {
+            cashOutFeeNaturalCalculator = new CashOutFeeNaturalCalculator(
+                config.currencyFormatter, config.cashOutNaturalFeeConfig);
+        })
+
         describe('natural persons', () => {
             it('fee should be zero for less than 1000.00 EUR cash out in 1 week', () => {
-                const cashOutFeeNaturalCalculator = new CashOutFeeNaturalCalculator(
-                    config.currencyFormatter, config.cashOutNaturalFeeConfig);
-
                 const operations = [
                     {
                         weekNumber: moment("2020-12-30", 'YYYY-MM-DD').week(),
@@ -98,23 +103,53 @@ describe('feeCalculation', () => {
                     expect(fee).toBe(0);
                 })
             })
-
-            describe('legal persons', () => {
-                it('fee should be not be less than 0.50 EUR', () => {
-                    const cashOutFeeJuridicalCalculator = new CashOutFeeJuridicalCalculator(
-                        config.currencyFormatter, config.cashOutJuridicalFeeConfig);
-
-                    const operation = {
-                        weekNumber: 2,
+            it('fee should not be zero for more than 1000.00 EUR cash out in 1 week', () => {
+                const operations = [
+                    {
+                        weekNumber: moment("2020-12-30", 'YYYY-MM-DD').week(),
                         user_id: 1,
-                        user_type: 'juridical',
+                        user_type: 'natural',
                         type: 'cash_out',
-                        operation: {amount: 2000.00, currency: 'EUR'},
-                    };
+                        operation: {amount: 1200.00, currency: 'EUR'}
+                    },
+                    {
+                        weekNumber: moment("2020-12-31", 'YYYY-MM-DD').week(),
+                        user_id: 1,
+                        user_type: 'natural',
+                        type: 'cash_out',
+                        operation: {amount: 100.00, currency: 'EUR'},
 
-                    expect(cashOutFeeJuridicalCalculator.calculate(operation)).toBeGreaterThan(0.50);
-                });
+                    },
+                    {
+                        weekNumber: moment("2021-01-01", 'YYYY-MM-DD').week(),
+                        user_id: 1,
+                        user_type: 'natural',
+                        type: 'cash_out',
+                        operation: {amount: 50.00, currency: 'EUR'},
+
+                    }];
+
+                operations.forEach(operation => {
+                    const fee = cashOutFeeNaturalCalculator.calculate(operation);
+                    expect(fee).not.toBe(0);
+                })
             })
+        })
+        describe('legal persons', () => {
+            it('fee should be not be less than 0.50 EUR', () => {
+                const cashOutFeeJuridicalCalculator = new CashOutFeeJuridicalCalculator(
+                    config.currencyFormatter, config.cashOutJuridicalFeeConfig);
+
+                const operation = {
+                    weekNumber: 2,
+                    user_id: 1,
+                    user_type: 'juridical',
+                    type: 'cash_out',
+                    operation: {amount: 2000.00, currency: 'EUR'},
+                };
+
+                expect(cashOutFeeJuridicalCalculator.calculate(operation)).toBeGreaterThan(0.50);
+            });
         })
     });
 })
