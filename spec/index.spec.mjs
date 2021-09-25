@@ -148,7 +148,7 @@ describe('feeCalculation', () => {
                     operation: {amount: 2000.00, currency: 'EUR'},
                 };
 
-                expect(cashOutFeeJuridicalCalculator.calculate(operation)).toBeGreaterThan(0.50);
+                expect(cashOutFeeJuridicalCalculator.calculate(operation)).not.toBeLessThan(0.50);
             });
         })
     });
