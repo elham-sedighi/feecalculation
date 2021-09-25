@@ -1,8 +1,8 @@
 import CashOutFeeCalculator from './cashOutFeeCalculator';
 
 export default class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
-  constructor(currencyFormatter, feeConfig) {
-    super(currencyFormatter, feeConfig);
+  constructor(feeConfig) {
+    super(feeConfig);
     this.cashOutNaturalOperationRecords = new Map();
   }
 
@@ -13,8 +13,7 @@ export default class CashOutFeeNaturalCalculator extends CashOutFeeCalculator {
     const allAmounts = existedAmount + newAmount;
     if (allAmounts >= this.feeConfig?.week_limit?.amount) {
       const effectiveAmount = newAmount - this.calculateExceededAmount(existedAmount);
-      fee = this.currencyFormatter.format(effectiveAmount
-          * this.feeConfig?.percents * 0.01);
+      fee = effectiveAmount * this.feeConfig?.percents * 0.01;
     }
     this.addOprToMap(operation);
     return fee;

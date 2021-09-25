@@ -1,5 +1,5 @@
 import FeeConfig from './feeConfig';
-import OperationDetail from '../../operationDetail';
+import OperationDetail from '../operationDetail';
 
 export default class CashOutNaturalFeeConfig extends FeeConfig {
   constructor(percents, weekLimit) {
