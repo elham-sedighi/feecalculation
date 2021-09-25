@@ -4,7 +4,6 @@ import { forkJoin, Observable } from 'rxjs';
 import { config } from './appConfig/appConfig';
 import FeeCalculatorFactory from './fee/feeCalculatorFactory';
 import Operation from './model/operation';
-
 import CashInFeeConfig from './model/feeConfig/cashInFeeConfig';
 import CashOutNaturalFeeConfig from './model/feeConfig/cashOutNaturalFeeConfig';
 import CashOutJuridicalFeeConfig from './model/feeConfig/cashOutJuridicalFeeConfig';
@@ -52,6 +51,21 @@ function calculateFees(inputData) {
   console.log('fee calculation finished successfully!');
 }
 
+function setLocalFeeConfigs() {
+  config.cashInFeeConfig = new CashInFeeConfig(0.03, {
+    amount: 5,
+    currency: config.currency,
+  });
+  config.cashOutNaturalFeeConfig = new CashOutNaturalFeeConfig(0.3, {
+    amount: 1000,
+    currency: config.currency,
+  });
+  config.cashOutJuridicalFeeConfig = new CashOutJuridicalFeeConfig(0.3, {
+    amount: 0.5,
+    currency: config.currency,
+  });
+}
+
 function runFeeCalculationApp() {
   getFeeConfigs().subscribe(
     ([cashInFeeConfig, cashOutNaturalFeeConfig, cashOutJuridicalFeeConfig]) => {
@@ -67,20 +81,10 @@ function runFeeCalculationApp() {
       }, (err) => {
         console.log(`failed to read file!_${err}`);
       });
-    }, (error) => {
+    },
+    (error) => {
       console.log(`Failed to get fee config data from API!_${error}`);
-      config.cashInFeeConfig = new CashInFeeConfig(0.03, {
-        amount: 5,
-        currency: config.currency,
-      });
-      config.cashOutNaturalFeeConfig = new CashOutNaturalFeeConfig(0.3, {
-        amount: 1000,
-        currency: config.currency,
-      });
-      config.cashOutJuridicalFeeConfig = new CashOutJuridicalFeeConfig(0.3, {
-        amount: 0.5,
-        currency: config.currency,
-      });
+      setLocalFeeConfigs();
       console.log('fee configs was set from local data!');
       readInputData('./asset/input.json').subscribe((inputData) => {
         calculateFees(inputData);
