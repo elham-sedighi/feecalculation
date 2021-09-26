@@ -109,7 +109,7 @@ Further information about the task is here: https://gist.github.com/PayseraGithu
 Clone the repo and install the dependencies.
 
 ```bash
-git clone https://github.com/elibushehri/feecalculation.git
+git clone https://github.com/elham-sedighi/feecalculation.git
 cd feecalculation-master
 ```
 
